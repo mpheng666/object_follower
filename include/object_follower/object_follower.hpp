@@ -47,11 +47,13 @@ class ObjectFollower {
 
   void loadRosParam();
   void imageCb(const Image::ConstPtr& msg);
-  void preProcessImage(const cv::Mat& input, cv::Mat& output);
-  // void drawBoundaries(cv::Mat& image, const std::string& id,
-  //                     const Rectangle& rec);
-  Pose detectObjectPose(const Image& image);
+  cv::Point drawTarget(cv_bridge::CvImagePtr& image_ptr,
+                  const double percent_horizontal,
+                  const double percent_vertical, const double offset_horizontal,
+                  const double offset_vertical);
+  bool detectObject(cv_bridge::CvImagePtr& image_ptr, cv::Point& object_centroid);
   void followTarget(const cv::Point& target, const cv::Point& current);
+  void searchTarget(const double angular_z_vel);
 };
 
 }  // namespace object_follower_ns

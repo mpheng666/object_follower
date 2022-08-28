@@ -1,6 +1,6 @@
 <launch>
     <arg name="use_thresholding" default="false"/>
-    <rosparam command="load" file="$(find object_follower)/config/threshold.yaml" />
+    <rosparam command="load" file="$(find object_follower)/config/follower.yaml" />
 
     <node pkg="object_follower" type="object_follower_node" name="object_follower" output="screen">
         <remap from="input_image" to="/realsense/color/image_raw" />
