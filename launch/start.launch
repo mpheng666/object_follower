@@ -1,8 +1,10 @@
 <launch>
     <arg name="use_thresholding" default="false"/>
+    <rosparam command="load" file="$(find object_follower)/config/threshold.yaml" />
 
     <node pkg="object_follower" type="object_follower_node" name="object_follower" output="screen">
         <remap from="input_image" to="/realsense/color/image_raw" />
+        <remap from="cmd_vel" to="/husky_velocity_controller/cmd_vel" />
     </node>
 
     <group if="$(arg use_thresholding)">
