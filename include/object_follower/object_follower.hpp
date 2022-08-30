@@ -7,12 +7,11 @@
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/image_encodings.h>
 #include <geometry_msgs/Twist.h>
+#include <sensor_msgs/PointCloud2.h>
 
 // Include opencv2
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
-
-
 
 namespace object_follower_ns {
 
@@ -24,6 +23,7 @@ struct PID {
 
 using Pose = geometry_msgs::Pose;
 using Image = sensor_msgs::Image;
+using PC2 = sensor_msgs::PointCloud2;
 class ObjectFollower {
  public:
   ObjectFollower(ros::NodeHandle* nh);
@@ -32,6 +32,7 @@ class ObjectFollower {
 
  private:
   ros::Subscriber image_sub_;
+  ros::Subscriber image_depth_sub_;
   ros::Publisher image_pub_;
   ros::Publisher object_pose_pub_;
   ros::Publisher cmd_vel_pub;
@@ -54,6 +55,7 @@ class ObjectFollower {
   bool detectObject(cv_bridge::CvImagePtr& image_ptr, cv::Point& object_centroid);
   void followTarget(const cv::Point& target, const cv::Point& current);
   void searchTarget(const double angular_z_vel);
+  void imageDepthCb(const PC2::ConstPtr& msg);
 };
 
 }  // namespace object_follower_ns

@@ -6,7 +6,9 @@ ObjectFollower::ObjectFollower(ros::NodeHandle* nh)
     : image_sub_(
           nh->subscribe("input_image", 1000, &ObjectFollower::imageCb, this)),
       image_pub_(nh->advertise<sensor_msgs::Image>("output_image", 10)),
-      cmd_vel_pub(nh->advertise<geometry_msgs::Twist>("cmd_vel", 10)) {}
+      cmd_vel_pub(nh->advertise<geometry_msgs::Twist>("cmd_vel", 10)),
+      image_depth_sub_(nh->subscribe("input_image", 1000,
+                                     &ObjectFollower::imageDepthCb, this)) {}
 
 ObjectFollower::~ObjectFollower() {}
 
@@ -34,10 +36,10 @@ void ObjectFollower::loadRosParam() {
 }
 
 cv::Point ObjectFollower::drawTarget(cv_bridge::CvImagePtr& image_ptr,
-                     const double percent_horizontal,
-                     const double percent_vertical,
-                     const double offset_horizontal,
-                     const double offset_vertical) {
+                                     const double percent_horizontal,
+                                     const double percent_vertical,
+                                     const double offset_horizontal,
+                                     const double offset_vertical) {
   // Draw target marker for following
   cv::Point target(image_ptr->image.size().width * percent_horizontal +
                        image_ptr->image.size().width * offset_horizontal,
@@ -127,5 +129,9 @@ void ObjectFollower::imageCb(const Image::ConstPtr& msg) {
   // Output modified video stream
   image_pub_.publish(cv_ptr->toImageMsg());
 }
+
+void ObjectFollower::imageDepthCb(const PC2::ConstPtr& msg) {
+  
+    }
 
 }  // namespace object_follower_ns
