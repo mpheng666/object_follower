@@ -1,0 +1,4 @@
+<launch>
+    <node pkg="pcl_ros_exploration" name="pc_to_img_node" type="pc_to_img_node" />
+
+</launch>
